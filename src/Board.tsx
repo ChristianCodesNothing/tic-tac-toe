@@ -7,6 +7,7 @@ export const Board: React.FC<Props> = ({}) => {
   const [playerTurn, setPlayerTurn] = useState<"x" | "o">("x")
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""])
   const [winner, setWinner] = useState<"" | "x" | "o">("")
+  const [newGame, setNewGame] = useState(true)
   const checkForWinner = (newBoard: string[]) => {
     const doesWin = (nums: number[]) =>
       newBoard[nums[0]] &&
@@ -22,8 +23,8 @@ export const Board: React.FC<Props> = ({}) => {
       [2, 5, 8],
       [0, 4, 8],
       [2, 4, 6],
-    ].forEach((element) => {
-      if (doesWin(element)) setWinner(playerTurn)
+    ].forEach((dub) => {
+      if (doesWin(dub)) setWinner(playerTurn)
     })
   }
   return (
@@ -38,10 +39,29 @@ export const Board: React.FC<Props> = ({}) => {
             board={board}
             setBoard={setBoard}
             checkForWinner={checkForWinner}
+            winner={winner}
+            newGame={newGame}
           />
         ))}
       </div>
-      {winner ? <p>{winner} is better. </p> : <p>{playerTurn} is moving...</p>}
+      <div className="flex justify-between">
+        <div>
+          {winner ? (
+            <p>{winner} is better. </p>
+          ) : (
+            <p>{playerTurn} is moving...</p>
+          )}
+        </div>
+        <button
+          onClick={() => {
+            setBoard(["", "", "", "", "", "", "", "", ""])
+            setWinner("")
+            setNewGame(!newGame)
+          }}
+        >
+          New Game
+        </button>
+      </div>
     </div>
   )
 }

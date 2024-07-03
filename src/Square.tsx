@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { GrInstagram } from "react-icons/gr"
 import { GrBitcoin } from "react-icons/gr"
 
@@ -9,6 +9,8 @@ interface Props {
   board: string[]
   setBoard: React.Dispatch<React.SetStateAction<string[]>>
   checkForWinner: (newBoard: string[]) => void
+  winner: "x" | "o" | ""
+  newGame: boolean
 }
 
 export const Square: React.FC<Props> = ({
@@ -18,13 +20,17 @@ export const Square: React.FC<Props> = ({
   board,
   setBoard,
   checkForWinner,
+  winner,
+  newGame,
 }) => {
   const [tileValue, setTileValue] = useState<"" | "x" | "o">("")
-
+  useEffect(() => {
+    setTileValue("")
+  }, [newGame])
   return (
     <button
       onClick={() => {
-        if (tileValue === "") {
+        if (tileValue === "" && !winner) {
           setTileValue(playerTurn)
           setPlayerTurn(playerTurn === "x" ? "o" : "x")
           let newBoard = board
